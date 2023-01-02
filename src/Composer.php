@@ -18,7 +18,7 @@ class Composer
         $projectRootPath = self::getProjectRootPath();
         $mode = $event->isDevMode() ? 'DEV' : 'PROD';
         echo ">> COMPOSER IN $mode MODE\n";
-        echo ">> COMPOSER ROOT PATH: $projectRootPath\n";
+        echo ">> PROJECT ROOT PATH: $projectRootPath\n";
         if (file_exists("$projectRootPath/.env.sample")) {
             echo ">> .env file management";
             if ($event->isDevMode()) {
