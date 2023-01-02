@@ -2,11 +2,19 @@
 
 namespace Aetonsi\Utils;
 
-use \Exception;
-
 class Composer
 {
     private static string $projectRootPath;
+
+    public static function writeline(string $msg)
+    {
+        echo ">> $msg\n";
+    }
+
+    public static function thrower(string $msg)
+    {
+        throw new \Exception(">> $msg");
+    }
 
     public static function getProjectRootPath()
     {
@@ -17,18 +25,18 @@ class Composer
     {
         $projectRootPath = self::getProjectRootPath();
         $mode = $event->isDevMode() ? 'DEV' : 'PROD';
-        echo ">> COMPOSER IN $mode MODE\n";
-        echo ">> PROJECT ROOT PATH: $projectRootPath\n";
+        self::writeline("COMPOSER IN $mode MODE");
+        self::writeline("PROJECT ROOT PATH: $projectRootPath");
         if (file_exists("$projectRootPath/.env.sample")) {
-            echo ">> .env file management";
-            if ($event->isDevMode()) {
-                if (!file_exists("$projectRootPath/.env")) {
-                    echo ">> copying .env.sample to .env\n";
-                    copy("$projectRootPath/.env.sample", "$projectRootPath/.env");
-                }
-            } else {
-                if (!file_exists("$projectRootPath/.env")) {
-                    throw new Exception('>> file .env missing!');
+            self::writeline(".env file management");
+            if (!file_exists("$projectRootPath/.env")) {
+                if ($event->isDevMode()) {
+                    self::writeline("copying .env.sample to .env");
+                    if (!copy("$projectRootPath/.env.sample", "$projectRootPath/.env")) {
+                        self::thrower('cannot create .env file!');
+                    }
+                } else {
+                    self::thrower('file .env missing!');
                 }
             }
         }
