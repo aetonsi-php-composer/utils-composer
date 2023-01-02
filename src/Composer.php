@@ -6,20 +6,28 @@ use \Exception;
 
 class Composer
 {
+    private static string $projectRootPath;
+
+    public static function getProjectRootPath()
+    {
+        return self::$projectRootPath ??= realpath(dirname(\Composer\Factory::getComposerFile()));
+    }
+
     public static function postAutoloadDump(\Composer\Script\Event $event)
     {
-        $root = dirname(__DIR__);
+        $projectRootPath = self::getProjectRootPath();
         $mode = $event->isDevMode() ? 'DEV' : 'PROD';
         echo ">> COMPOSER IN $mode MODE\n";
-        if (file_exists("$root/.env.sample")) {
+        echo ">> COMPOSER ROOT PATH: $projectRootPath\n";
+        if (file_exists("$projectRootPath/.env.sample")) {
             echo ">> .env file management";
             if ($event->isDevMode()) {
-                if (!file_exists("$root/.env")) {
+                if (!file_exists("$projectRootPath/.env")) {
                     echo ">> copying .env.sample to .env\n";
-                    copy("$root/.env.sample", "$root/.env");
+                    copy("$projectRootPath/.env.sample", "$projectRootPath/.env");
                 }
             } else {
-                if (!file_exists("$root/.env")) {
+                if (!file_exists("$projectRootPath/.env")) {
                     throw new Exception('>> file .env missing!');
                 }
             }
