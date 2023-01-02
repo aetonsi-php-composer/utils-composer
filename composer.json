@@ -1,0 +1,37 @@
+{
+    "name": "aetonsi/utils-composer",
+    "description": "Composer utils class \\Aetonsi\\Utils\\Composer",
+    "type": "library",
+    "keywords": [
+        "utils",
+        "composer"
+    ],
+    "require": {
+        "php": ">=8",
+        "composer/composer": "*",
+        "phpunit/phpunit": "*"
+    },
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "aetonsi",
+            "email": "18366087+aetonsi@users.noreply.github.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Aetonsi\\Utils\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Aetonsi\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "\\Aetonsi\\Utils\\Composer::postAutoloadDump"
+        ],
+        "test": "./vendor/bin/phpunit"
+    }
+}
